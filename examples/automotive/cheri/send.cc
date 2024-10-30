@@ -4,6 +4,7 @@
 #include <compartment.h>
 #include <debug.hh>
 #include <platform-adc.hh>
+#include <platform-gpio.hh>
 #include <platform-ethernet.hh>
 #include <platform-gpio.hh>
 #include <thread.h>
