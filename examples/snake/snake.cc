@@ -224,8 +224,8 @@ class SnakeGame
 	bool joystick_in_direction(SonataJoystick joystick,
 	                           SonataJoystick direction)
 	{
-		return (static_cast<uint8_t>(joystick) &
-		        static_cast<uint8_t>(direction)) > 0;
+		return (static_cast<uint16_t>(joystick) &
+		        static_cast<uint16_t>(direction)) > 0;
 	};
 
 	/**
