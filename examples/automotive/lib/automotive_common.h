@@ -11,11 +11,11 @@
 // Possible GPIO inputs for the joystick, and which GPIO bit they correspond to
 enum JoystickDir
 {
-	Left    = 1 << 0,
-	Up      = 1 << 1,
-	Pressed = 1 << 2,
-	Down    = 1 << 3,
-	Right   = 1 << 4,
+	Left    = 1u << 8,
+	Up      = 1u << 9,
+	Pressed = 1u << 10,
+	Down    = 1u << 11,
+	Right   = 1u << 12,
 };
 
 // BGR Colours used for LCD display in the automotive demo
@@ -159,7 +159,7 @@ typedef struct AutomotiveCallbacks
 	// A callback that is called once at the start of the demo
 	void (*start)();
 	// A function that reads the joystick information via GPIO
-	uint8_t (*joystick_read)(); // NOLINT
+	uint16_t (*joystick_read)(); // NOLINT
 	// A function that reads the pedal, as a digital (Boolean) value.
 	bool (*digital_pedal_read)(); // NOLINT
 	// A function that reads the pedal, as an analogue value.
@@ -200,7 +200,7 @@ extern "C"
 #endif //__cplusplus
 	void init_lcd(uint32_t width, uint32_t height);
 	void init_callbacks(AutomotiveCallbacks automotiveCallbacks);
-	bool joystick_in_direction(uint8_t joystick, enum JoystickDir direction);
+	bool joystick_in_direction(uint16_t joystick, enum JoystickDir direction);
 	void send_data_frame(const uint64_t *data,
 	                     EthernetHeader  header,
 	                     uint16_t        length);

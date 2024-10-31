@@ -3,7 +3,6 @@
 
 #include <compartment.h>
 #include <debug.hh>
-#include <platform-gpio.hh>
 #include <platform-ethernet.hh>
 #include <platform-gpio.hh>
 #include <platform-pwm.hh>
@@ -88,8 +87,8 @@ uint64_t wait_with_input(const uint64_t EndTime, bool *flagReset)
 	while (currentTime < EndTime)
 	{
 		currentTime = rdcycle64();
-		const uint8_t JoystickState =
-		  static_cast<uint8_t>(gpio->read_joystick());
+		const uint16_t JoystickState =
+		  static_cast<uint16_t>(gpio->read_joystick());
 		*flagReset |= joystick_in_direction(JoystickState, Pressed);
 	}
 	return currentTime;
