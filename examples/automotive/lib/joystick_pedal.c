@@ -59,7 +59,7 @@ static void joystick_task_one()
 
 	// Read the next pedal information to send - in this case checking for
 	// any joystick inputs and modifying the acceleration accordingly.
-	uint8_t joystick = callbacks.joystick_read();
+	uint16_t joystick = callbacks.joystick_read();
 	if (joystick_in_direction(joystick, Right) && taskOneMem->acceleration < 99)
 	{
 		taskOneMem->acceleration += 1;
@@ -86,7 +86,7 @@ bool joystick_task_two()
 {
 	// Determine based on joystick input whether the user wishes to
 	// manually trigger the bug in this demo or not.
-	uint8_t    joystick = callbacks.joystick_read();
+	uint16_t   joystick = callbacks.joystick_read();
 	const bool EnoughTimePassed =
 	  callbacks.time() > (lastInputTime + 3 * callbacks.waitTime);
 	const bool JoystickMoved = joystick_in_direction(joystick, Up) ||

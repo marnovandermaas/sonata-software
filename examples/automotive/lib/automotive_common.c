@@ -53,9 +53,9 @@ void init_callbacks(AutomotiveCallbacks automotiveCallbacks)
  * `joystick` is the state of the joystick packed in the bits of a byte.
  * `direction` is the specific direction bit to test for.
  */
-bool joystick_in_direction(uint8_t joystick, enum JoystickDir direction)
+bool joystick_in_direction(uint16_t joystick, enum JoystickDir direction)
 {
-	return (joystick & ((uint8_t)direction)) > 0;
+	return (joystick & ((uint16_t)direction)) > 0;
 };
 
 /**

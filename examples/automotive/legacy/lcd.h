@@ -12,10 +12,10 @@
 enum
 {
 	// Pin out mapping.
-	LcdCsPin = 0,
-	LcdRstPin,
-	LcdDcPin,
-	LcdBlPin,
+	LcdCsLine = 0,
+	LcdRstLine,
+	LcdDcLine,
+	LcdBlLine,
 	LcdMosiPin,
 	LcdSclkPin,
 	// Spi clock rate.

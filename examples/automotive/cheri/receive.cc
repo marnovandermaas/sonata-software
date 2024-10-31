@@ -3,8 +3,8 @@
 
 #include <compartment.h>
 #include <debug.hh>
-#include <platform-gpio.hh>
 #include <platform-ethernet.hh>
+#include <platform-gpio.hh>
 #include <platform-pwm.hh>
 #include <thread.h>
 
@@ -14,8 +14,7 @@
 
 #include "common.hh"
 
-using Debug     = ConditionalDebug<true, "Automotive-Receive">;
-using SonataPwm = SonataPulseWidthModulation;
+using Debug = ConditionalDebug<true, "Automotive-Receive">;
 using namespace CHERI;
 using namespace sonata::lcd;
 
@@ -64,8 +63,8 @@ struct CarInfo
 };
 
 // Driver structs/classes
-EthernetDevice      *ethernet;
-SonataLcd           *lcd;
+EthernetDevice           *ethernet;
+SonataLcd                *lcd;
 volatile SonataGpioBoard *gpio;
 
 // Sets the operating mode that the demo is running in. Default is passthrough.
@@ -88,8 +87,8 @@ uint64_t wait_with_input(const uint64_t EndTime, bool *flagReset)
 	while (currentTime < EndTime)
 	{
 		currentTime = rdcycle64();
-		const uint8_t JoystickState =
-		  static_cast<uint8_t>(gpio->read_joystick());
+		const uint16_t JoystickState =
+		  static_cast<uint16_t>(gpio->read_joystick());
 		*flagReset |= joystick_in_direction(JoystickState, Pressed);
 	}
 	return currentTime;

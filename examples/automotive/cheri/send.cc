@@ -4,8 +4,8 @@
 #include <compartment.h>
 #include <debug.hh>
 #include <platform-adc.hh>
-#include <platform-gpio.hh>
 #include <platform-ethernet.hh>
+#include <platform-gpio.hh>
 #include <thread.h>
 
 #include "../../../libraries/lcd.hh"
@@ -279,24 +279,25 @@ void lcd_draw_img(uint32_t       x,
  * A callback function used to read the GPIO joystick state.
  *
  * Returns the current joystick state as a byte, where each of the
- * 5 least significant bits corresponds to a given joystick input.
+ * 5 bits (offset by 8) corresponds to a given joystick input.
  */
-uint8_t read_joystick()
+uint16_t read_joystick()
 {
 	auto gpio = MMIO_CAPABILITY(SonataGpioBoard, gpio_board);
-	return static_cast<uint8_t>(gpio->read_joystick());
+	return static_cast<uint16_t>(gpio->read_joystick());
 }
 
 /**
  * A callback function used to read the pedal input as a digital value,
- * when the pedal is plugged into the mikroBUS INT pin under header P7.
+ * when the pedal is plugged into PMOD0 pin 1, and its output is
+ * already set to enabled.
  *
  * Returns true if the pedal is pressed down, and false if not.
  */
 bool read_pedal_digital()
 {
-	auto gpio = MMIO_CAPABILITY(SonataGpioBoard, gpio_board);
-	return (gpio->input & (1 << 13)) > 0;
+	auto gpio = MMIO_CAPABILITY(SonataGpioPmod0, gpio_pmod0);
+	return gpio->read_input(0);
 }
 
 /**
@@ -487,6 +488,11 @@ __attribute__((
  */
 void __cheri_compartment("automotive_send") entry()
 {
+	// Initialise PMOD0 Pin 1 GPIO as input for running the digital pedal demo
+	// (output_enable = false configures as input)
+	auto gpio_pmod0 = MMIO_CAPABILITY(SonataGpioPmod0, gpio_pmod0);
+	gpio_pmod0->set_output_enable(0, false);
+
 	// Initialise the LCD driver and calculate display information
 	lcd               = new SonataLcd();
 	Size  displaySize = lcd->resolution();

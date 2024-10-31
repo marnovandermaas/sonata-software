@@ -80,8 +80,8 @@ DemoApplication select_demo()
 	callbacks.uart_send("Waiting for user input in the main menu...\n");
 	while (!optionSelected)
 	{
-		prevOption                  = currentOption;
-		const uint8_t JoystickInput = callbacks.joystick_read();
+		prevOption                   = currentOption;
+		const uint16_t JoystickInput = callbacks.joystick_read();
 		if (joystick_in_direction(JoystickInput, Right))
 		{
 			currentOption =

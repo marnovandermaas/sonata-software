@@ -68,7 +68,7 @@ bool digital_task_two()
 {
 	// Determine based on joystick input whether the user wishes to
 	// manually trigger the bug in the demo or not.
-	uint8_t    joystick = callbacks.joystick_read();
+	uint16_t   joystick = callbacks.joystick_read();
 	const bool EnoughTimePassed =
 	  callbacks.time() > (lastInputTime + 3 * callbacks.waitTime);
 	const bool JoystickMoved = joystick_in_direction(joystick, Up) ||

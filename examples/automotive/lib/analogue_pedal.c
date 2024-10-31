@@ -112,7 +112,7 @@ static void analogue_task_one()
 bool analogue_task_two()
 {
 	// Control the volume bar via joystick input
-	uint8_t joystick = callbacks.joystick_read();
+	uint16_t joystick = callbacks.joystick_read();
 	if (joystick_in_direction(joystick, Up) && taskTwoMem->volume > 0)
 	{
 		taskTwoMem->volume -= 1;

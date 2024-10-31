@@ -39,9 +39,17 @@
 
 #define ADC_BASE 0x8000B000
 
-// Define our own GPIO_IN_DBnC as the version from `sonata-system` uses void
+// Define our own GPIO_IN_DBNC as the version from `sonata-system` uses void
 // pointer arithmetic, which clang-tidy forbids.
 #define GPIO_IN_DBNC_AM GPIO_FROM_BASE_ADDR((GPIO_BASE + GPIO_IN_DBNC_REG))
+
+#define GPIO_SPACING (0x40)
+#define GPIO_PMOD_0 (3) // 0 = Board, 1 = Rpi, 2 = Arduino, 3 = PMOD0, ...
+#define GPIO_BASE_PMOD_0 (GPIO_BASE + (GPIO_SPACING * GPIO_PMOD_0))
+#define GPIO_IN_DBNC_PMOD_0                                                    \
+	GPIO_FROM_BASE_ADDR((GPIO_BASE_PMOD_0 + GPIO_IN_DBNC_REG))
+#define GPIO_OUT_EN_PMOD_0                                                     \
+	GPIO_FROM_BASE_ADDR((GPIO_BASE_PMOD_0 + GPIO_OUT_EN_REG))
 
 // Global driver structs for use in callback functionality.
 static uart_t uart0, uart1;
@@ -187,22 +195,23 @@ void lcd_draw_img(uint32_t       x,
  * A callback function used to read the GPIO joystick state.
  *
  * Returns the current joysttick state as a byte, where each of the
- * 5 least significant bits corresponds to a given joystick input.
+ * 5 bits (offset by 8) corresponds to a given joystick input.
  */
-uint8_t read_joystick()
+uint16_t read_joystick()
 {
-	return ((uint8_t)read_gpio(GPIO_IN_DBNC_AM)) & 0x1f;
+	return ((uint16_t)read_gpio(GPIO_IN_DBNC_AM)) & (0x1f << 8);
 }
 
 /**
  * A callback function used to read the pedal input as a digital value,
- * when the pedal is plugged into the mikroBUS INT pin under header P7.
+ * when the pedal is plugged into PMOD0 pin 1, and its output is
+ * already set to enabled.
  *
  * Returns true if the pedal is pressed down, and false if not.
  */
 bool read_pedal_digital()
 {
-	return (read_gpio(GPIO_IN_DBNC_AM) & (1 << 13)) > 0;
+	return (read_gpio(GPIO_IN_DBNC_PMOD_0) & 1u) > 0;
 }
 
 /**
@@ -360,6 +369,10 @@ int main()
 	// Initialise the timer
 	timer_init();
 	timer_enable(SYSCLK_FREQ / 1000);
+
+	// Initialise PMOD0 Pin 1 GPIO as input for running the digital pedal demo
+	// (output_enable = 0 configures as input)
+	set_output_bit(GPIO_OUT_EN_PMOD_0, 0, 0);
 
 	// Initialise LCD display driver
 	LCD_Interface lcdInterface;
