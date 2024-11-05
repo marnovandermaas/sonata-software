@@ -34,11 +34,11 @@ static uint32_t gpio_write(void *handle, bool cs, bool dc)
 	return 0;
 }
 
-int lcd_init(spi_t *spi, St7735Context *lcd, LCD_Interface *interface)
+int lcd_init(spi_t *spi, pwm_t lcd_bl, St7735Context *lcd, LCD_Interface *interface)
 {
 	// Set the initial state of the LCD control pins
 	spi_set_cs(spi, LcdDcLine, 0x0);
-	spi_set_cs(spi, LcdBlLine, 0x1);
+	set_pwm(lcd_bl, 1, 255);
 	spi_set_cs(spi, LcdCsLine, 0x0);
 
 	// Reset the LCD

@@ -13,6 +13,7 @@
 #include "../../../third_party/display_drivers/core/m3x6_16pt.h"
 #include "../../../third_party/display_drivers/st7735/lcd_st7735.h"
 #include "../../../third_party/sonata-system/sw/legacy/common/gpio.h"
+#include "../../../third_party/sonata-system/sw/legacy/common/pwm.h"
 #include "../../../third_party/sonata-system/sw/legacy/common/rv_plic.h"
 #include "../../../third_party/sonata-system/sw/legacy/common/sonata_system.h"
 #include "../../../third_party/sonata-system/sw/legacy/common/spi.h"
@@ -377,8 +378,9 @@ int main()
 	// Initialise LCD display driver
 	LCD_Interface lcdInterface;
 	spi_t         lcdSpi;
+	pwm_t         lcd_bl = PWM_FROM_ADDR_AND_INDEX(PWM_BASE, PWM_LCD);
 	spi_init(&lcdSpi, LCD_SPI, LcdSpiSpeedHz);
-	lcd_init(&lcdSpi, &lcd, &lcdInterface);
+	lcd_init(&lcdSpi, lcd_bl, &lcd, &lcdInterface);
 	lcd_clean(BACKGROUND_COLOUR);
 	const LCD_Point Centre = {lcd.parent.width / 2, lcd.parent.height / 2};
 
