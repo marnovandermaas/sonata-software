@@ -21,8 +21,8 @@ enum
 	// Ethernet IRQs
 	EthIntrIrq = 2,
 	// Ethernet Chip Select Lines
-	EthCsLine  = 1,
-	EthRstLine = 2,
+	EthCsLine  = 0,
+	EthRstLine = 1,
 };
 
 static struct Netif *ethNetif;
