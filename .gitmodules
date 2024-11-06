@@ -13,3 +13,6 @@
 	path = third_party/sonata-system
 	url = https://github.com/lowRISC/sonata-system
 	branch = main
+[submodule "network-stack"]
+	path = network-stack
+	url = https://github.com/marnovandermaas/cheriot-network-stack.git
