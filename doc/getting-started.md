@@ -1,4 +1,7 @@
-# Getting started guide
+---
+colorlinks: true
+---
+# Sonata getting started guide
 
 This guide tells you how to get started with the Sonata board.
 If you have any issues in following this guide please contact the lowRISC team at [info@lowrisc.org](mailto:info@lowrisc.org).
@@ -27,7 +30,11 @@ For latest systems this would just be a single command:
 wsl --install
 ```
 
+---
+
 > You might need to enable virtualisation in the BIOS if it's not enabled by default.
+
+---
 
 If you are running the command without admin privileges, user account control (UAC) popups will appear a few times asking to allow changes to be made to the device.
 Click "yes" to approve.
@@ -39,16 +46,21 @@ Click it to start.
 For the first time, it prompts you to select a Unix username and password.
 Follow the Linux (Ubuntu) steps for the rest of this guide.
 
-> ℹ️ If you have installed your WSL a long time ago, `systemd` may not have been enabled by default.
+---
+
+> If you have installed your WSL a long time ago, `systemd` may not have been enabled by default.
 > It is recommended to enable `systemd`.
 > Follow the following guide on [using systemd to manage Linux services with WSL](https://learn.microsoft.com/en-us/windows/wsl/systemd).
+
+---
 
 ## Installing Nix
 
 The Nix package manager is used to create reproducible builds and consistent development environments.
 For Linux systems, we recommend the following command from the official [documentation](https://nixos.org/download/):
 ```sh
-sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon
+sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) \
+  --daemon
 ```
 For other systems such as macOS, Windows (WSL2), Docker and others, follow the official [documentation](https://nixos.org/download/).
 
@@ -66,7 +78,9 @@ To make use of the lowRISC Nix cache, so you don't have to rebuild binaries your
 To do this, you add your username to the trusted users in `/etc/nix/nix.conf`, e.g. `trusted-users = root username`.
 *You can also add all users from a certain group instead of a single user by using an `@` symbol before the group name, e.g. `@sudo` or `@wheel`.*
 
-> ℹ️ For Ubuntu users (including WSL users), this means adding this line to the `/etc/nix/nix.conf`:
+---
+
+> For Ubuntu users (including WSL users), this means adding this line to the `/etc/nix/nix.conf`:
 > ```
 > trusted-users = root @sudo
 > ```
@@ -76,12 +90,16 @@ To do this, you add your username to the trusted users in `/etc/nix/nix.conf`, e
 > sudo systemctl restart nix-daemon
 > ```
 
-> ℹ️ For macOS users, this means adding this line to the `/etc/nix/nix.conf`:
+---
+
+> For macOS users, this means adding this line to the `/etc/nix/nix.conf`:
 > ```
 > trusted-users = root @admin
 > ```
 >
 > You then need to restart your Mac for the changes to take effect.
+
+---
 
 ## Enter the CHERIoT development environment
 
@@ -102,11 +120,14 @@ Nix can and will build everything from source if it can't find a cached version,
 This is what the warning looks like if you have not configured the cache correctly:
 
 ```
-do you want to allow configuration setting 'extra-substituters' to be set to 'https://nix-cache.lowrisc.org/public/' (y/N)? y
+do you want to allow configuration setting 'extra-substituters' to be set to
+'https://nix-cache.lowrisc.org/public/' (y/N)? y
 do you want to permanently mark this value as trusted (y/N)? y
-do you want to allow configuration setting 'extra-trusted-public-keys' to be set to 'nix-cache.lowrisc.org-public-1:O6JLD0yXzaJDPiQW1meVu32JIDViuaPtGDfjlOopU7o=' (y/N)? y
+do you want to allow configuration setting 'extra-trusted-public-keys' to be set to
+'nix-cache.lowrisc.org-public-1:O6JLD0yXzaJDPiQW1meVu32JIDViuaPtGDfjlOopU7o=' (y/N)? y
 do you want to permanently mark this value as trusted (y/N)? y
-warning: ignoring untrusted substituter 'https://nix-cache.lowrisc.org/public/', you are not a trusted user.
+warning: ignoring untrusted substituter 'https://nix-cache.lowrisc.org/public/',
+you are not a trusted user.
 ```
 
 ## Your first build
@@ -151,166 +172,13 @@ If you have got a successful build, congratulations!
 Your environment is ready to go for Sonata software development.
 Get in touch with lowRISC on [info@lowrisc.org](mailto:info@lowrisc.org) if you have any issues.
 
-For reference the full output (from a build run on a Linux machine) looks like:
+For reference the output (from a build run on a Linux machine) looks like:
 
 ```console
 $ xmake build -P examples
 checking for platform ... cheriot
 checking for architecture ... cheriot
-generating sonata-software/cheriot-rtos/sdk/firmware.ldscript.in ... ok
-generating sonata-software/cheriot-rtos/sdk/firmware.ldscript.in ... ok
-generating sonata-software/cheriot-rtos/sdk/firmware.ldscript.in ... ok
-generating sonata-software/cheriot-rtos/sdk/firmware.ldscript.in ... ok
-generating sonata-software/cheriot-rtos/sdk/firmware.ldscript.in ... ok
-generating sonata-software/cheriot-rtos/sdk/firmware.ldscript.in ... ok
-generating sonata-software/cheriot-rtos/sdk/firmware.ldscript.in ... ok
-generating sonata-software/cheriot-rtos/sdk/firmware.ldscript.in ... ok
-[ 29%]: cache compiling.release ../cheriot-rtos/sdk/core/scheduler/main.cc
-[ 29%]: cache compiling.release automotive/lib/automotive_common.c
-[ 30%]: cache compiling.release automotive/lib/no_pedal.c
-[ 31%]: cache compiling.release automotive/lib/joystick_pedal.c
-[ 31%]: cache compiling.release automotive/lib/digital_pedal.c
-[ 32%]: cache compiling.release automotive/lib/analogue_pedal.c
-[ 32%]: cache compiling.release all/i2c_example.cc
-[ 32%]: cache compiling.release ../cheriot-rtos/sdk/core/scheduler/main.cc
-[ 32%]: cache compiling.release ../cheriot-rtos/sdk/core/scheduler/main.cc
-[ 32%]: cache compiling.release snake/snake.cc
-[ 32%]: cache compiling.release all/rgbled_lerp.cc
-[ 32%]: cache compiling.release ../cheriot-rtos/sdk/core/scheduler/main.cc
-[ 32%]: cache compiling.release ../cheriot-rtos/sdk/core/scheduler/main.cc
-[ 32%]: cache compiling.release automotive/lib/automotive_menu.c
-[ 32%]: cache compiling.release automotive/cheri/send.cc
-[ 33%]: cache compiling.release all/lcd_test.cc
-[ 34%]: cache compiling.release ../cheriot-rtos/sdk/core/scheduler/main.cc
-[ 34%]: cache compiling.release all/led_walk_raw.cc
-[ 35%]: cache compiling.release all/echo.cc
-[ 36%]: cache compiling.release ../third_party/display_drivers/src/core/lcd_base.c
-[ 36%]: cache compiling.release ../third_party/display_drivers/src/core/m3x6_16pt.c
-[ 37%]: cache compiling.release ../third_party/display_drivers/src/core/lucida_console_10pt.c
-[ 37%]: cache compiling.release ../third_party/display_drivers/src/core/lucida_console_12pt.c
-[ 38%]: cache compiling.release ../third_party/display_drivers/src/st7735/lcd_st7735.c
-[ 39%]: cache compiling.release ../libraries/lcd.cc
-[ 39%]: cache compiling.release automotive/lib/automotive_common.c
-[ 40%]: cache compiling.release automotive/cheri/receive.cc
-[ 41%]: cache compiling.release ../cheriot-rtos/sdk/core/scheduler/main.cc
-Not overriding global variable alignment for _ZL10memTaskTwo since it has a section assigned.
-Not overriding global variable alignment for _ZL18memAnalogueTaskTwo since it has a section assigned.
-[ 42%]: cache compiling.release ../cheriot-rtos/sdk/core/loader/boot.cc
-[ 43%]: cache compiling.release ../cheriot-rtos/sdk/core/allocator/main.cc
-[ 43%]: compiling.release ../cheriot-rtos/sdk/core/loader/boot.S
-[ 43%]: cache compiling.release ../cheriot-rtos/sdk/lib/atomic/atomic4.cc
-[ 44%]: cache compiling.release ../cheriot-rtos/sdk/lib/locks/locks.cc
-[ 44%]: cache compiling.release ../cheriot-rtos/sdk/lib/locks/semaphore.cc
-[ 45%]: cache compiling.release ../cheriot-rtos/sdk/lib/crt/cz.c
-[ 46%]: cache compiling.release ../cheriot-rtos/sdk/lib/crt/arith64.c
-[ 46%]: cache compiling.release ../cheriot-rtos/sdk/core/scheduler/main.cc
-[ 47%]: cache compiling.release ../cheriot-rtos/sdk/lib/compartment_helpers/claim_fast.cc
-[ 48%]: cache compiling.release ../cheriot-rtos/sdk/lib/compartment_helpers/check_pointer.cc
-[ 48%]: cache compiling.release ../cheriot-rtos/sdk/lib/atomic/atomic1.cc
-[ 49%]: cache compiling.release ../cheriot-rtos/sdk/lib/freestanding/memcmp.c
-[ 50%]: cache compiling.release ../cheriot-rtos/sdk/lib/freestanding/memcpy.c
-[ 50%]: cache compiling.release ../cheriot-rtos/sdk/lib/freestanding/memset.c
-[ 51%]: compiling.release ../cheriot-rtos/sdk/core/switcher/entry.S
-[ 51%]: compiling.release ../cheriot-rtos/sdk/core/token_library/token_unseal.S
-[ 52%]: cache compiling.release ../cheriot-rtos/sdk/lib/debug/debug.cc
-[ 53%]: cache compiling.release all/proximity_sensor_example.cc
-[ 53%]: linking compartment rgbled_lerp.compartment
-[ 54%]: linking compartment echo.compartment
-[ 55%]: linking library lcd.library
-[ 55%]: linking library crt.library
-[ 56%]: linking library atomic4.library
-[ 56%]: linking library freestanding.library
-[ 57%]: linking privileged library cheriot.token_library.library
-[ 62%]: linking compartment lcd_test.compartment
-[ 63%]: linking library locks.library
-[ 67%]: linking library atomic1.library
-[ 68%]: linking library compartment_helpers.library
-[ 70%]: linking privileged compartment automotive_demo_receive.scheduler.compartment
-[ 70%]: linking privileged compartment cheriot.allocator.compartment
-[ 71%]: linking privileged compartment automotive_demo_send_cheriot.scheduler.compartment
-[ 72%]: linking privileged compartment leds_and_lcd.scheduler.compartment
-[ 72%]: linking privileged compartment proximity_test.scheduler.compartment
-[ 73%]: linking privileged compartment snake_demo.scheduler.compartment
-[ 74%]: linking privileged compartment sonata_demo_everything.scheduler.compartment
-[ 74%]: linking privileged compartment sonata_proximity_demo.scheduler.compartment
-[ 75%]: linking privileged compartment sonata_simple_demo.scheduler.compartment
-[ 81%]: linking library debug.library
-[ 82%]: linking compartment automotive_receive.compartment
-[ 83%]: linking compartment automotive_send.compartment
-[ 84%]: linking compartment led_walk_raw.compartment
-[ 84%]: linking compartment proximity_sensor_example.compartment
-[ 85%]: linking compartment snake.compartment
-[ 86%]: linking compartment i2c_example.compartment
-[ 89%]: linking firmware ../build/cheriot/cheriot/release/automotive_demo_receive
-[ 89%]: Creating firmware report ../build/cheriot/cheriot/release/automotive_demo_receive.json
-[ 89%]: Creating firmware dump ../build/cheriot/cheriot/release/automotive_demo_receive.dump
-Converted to uf2, output size: 128000, start address: 0x0
-Wrote 128000 bytes to ../build/cheriot/cheriot/release/automotive_demo_receive.slot1.uf2
-Converted to uf2, output size: 128000, start address: 0x10000000
-Wrote 128000 bytes to ../build/cheriot/cheriot/release/automotive_demo_receive.slot2.uf2
-Converted to uf2, output size: 128000, start address: 0x20000000
-Wrote 128000 bytes to ../build/cheriot/cheriot/release/automotive_demo_receive.slot3.uf2
-[ 90%]: linking firmware ../build/cheriot/cheriot/release/automotive_demo_send_cheriot
-[ 91%]: linking firmware ../build/cheriot/cheriot/release/leds_and_lcd
-[ 91%]: linking firmware ../build/cheriot/cheriot/release/sonata_simple_demo
-[ 92%]: linking firmware ../build/cheriot/cheriot/release/proximity_test
-[ 93%]: linking firmware ../build/cheriot/cheriot/release/sonata_proximity_demo
-[ 93%]: linking firmware ../build/cheriot/cheriot/release/snake_demo
-[ 90%]: Creating firmware report ../build/cheriot/cheriot/release/automotive_demo_send_cheriot.json
-[ 90%]: Creating firmware dump ../build/cheriot/cheriot/release/automotive_demo_send_cheriot.dump
-[ 91%]: Creating firmware report ../build/cheriot/cheriot/release/leds_and_lcd.json
-[ 91%]: Creating firmware dump ../build/cheriot/cheriot/release/leds_and_lcd.dump
-[ 91%]: Creating firmware report ../build/cheriot/cheriot/release/sonata_simple_demo.json
-[ 91%]: Creating firmware dump ../build/cheriot/cheriot/release/sonata_simple_demo.dump
-[ 92%]: Creating firmware report ../build/cheriot/cheriot/release/proximity_test.json
-[ 92%]: Creating firmware dump ../build/cheriot/cheriot/release/proximity_test.dump
-[ 94%]: linking firmware ../build/cheriot/cheriot/release/sonata_demo_everything
-[ 93%]: Creating firmware report ../build/cheriot/cheriot/release/sonata_proximity_demo.json
-[ 93%]: Creating firmware dump ../build/cheriot/cheriot/release/sonata_proximity_demo.dump
-[ 93%]: Creating firmware report ../build/cheriot/cheriot/release/snake_demo.json
-[ 93%]: Creating firmware dump ../build/cheriot/cheriot/release/snake_demo.dump
-[ 94%]: Creating firmware report ../build/cheriot/cheriot/release/sonata_demo_everything.json
-[ 94%]: Creating firmware dump ../build/cheriot/cheriot/release/sonata_demo_everything.dump
-Converted to uf2, output size: 146432, start address: 0x0
-Wrote 146432 bytes to ../build/cheriot/cheriot/release/automotive_demo_send_cheriot.slot1.uf2
-Converted to uf2, output size: 92672, start address: 0x0
-Wrote 92672 bytes to ../build/cheriot/cheriot/release/proximity_test.slot1.uf2
-Converted to uf2, output size: 162816, start address: 0x0
-Wrote 162816 bytes to ../build/cheriot/cheriot/release/leds_and_lcd.slot1.uf2
-Converted to uf2, output size: 146432, start address: 0x10000000
-Wrote 146432 bytes to ../build/cheriot/cheriot/release/automotive_demo_send_cheriot.slot2.uf2
-Converted to uf2, output size: 161792, start address: 0x0
-Wrote 161792 bytes to ../build/cheriot/cheriot/release/sonata_simple_demo.slot1.uf2
-Converted to uf2, output size: 175104, start address: 0x0
-Wrote 175104 bytes to ../build/cheriot/cheriot/release/sonata_proximity_demo.slot1.uf2
-Converted to uf2, output size: 92672, start address: 0x10000000
-Wrote 92672 bytes to ../build/cheriot/cheriot/release/proximity_test.slot2.uf2
-Converted to uf2, output size: 175104, start address: 0x0
-Wrote 175104 bytes to ../build/cheriot/cheriot/release/sonata_demo_everything.slot1.uf2
-Converted to uf2, output size: 126976, start address: 0x0
-Converted to uf2, output size: 146432, start address: 0x20000000
-Converted to uf2, output size: 162816, start address: 0x10000000
-Wrote 126976 bytes to ../build/cheriot/cheriot/release/snake_demo.slot1.uf2
-Wrote 146432 bytes to ../build/cheriot/cheriot/release/automotive_demo_send_cheriot.slot3.uf2
-Wrote 162816 bytes to ../build/cheriot/cheriot/release/leds_and_lcd.slot2.uf2
-Converted to uf2, output size: 161792, start address: 0x10000000
-Wrote 161792 bytes to ../build/cheriot/cheriot/release/sonata_simple_demo.slot2.uf2
-Converted to uf2, output size: 92672, start address: 0x20000000
-Wrote 92672 bytes to ../build/cheriot/cheriot/release/proximity_test.slot3.uf2
-Converted to uf2, output size: 175104, start address: 0x10000000
-Wrote 175104 bytes to ../build/cheriot/cheriot/release/sonata_proximity_demo.slot2.uf2
-Converted to uf2, output size: 175104, start address: 0x10000000
-Wrote 175104 bytes to ../build/cheriot/cheriot/release/sonata_demo_everything.slot2.uf2
-Converted to uf2, output size: 162816, start address: 0x20000000
-Wrote 162816 bytes to ../build/cheriot/cheriot/release/leds_and_lcd.slot3.uf2
-Converted to uf2, output size: 126976, start address: 0x10000000
-Wrote 126976 bytes to ../build/cheriot/cheriot/release/snake_demo.slot2.uf2
-Converted to uf2, output size: 161792, start address: 0x20000000
-Wrote 161792 bytes to ../build/cheriot/cheriot/release/sonata_simple_demo.slot3.uf2
-Converted to uf2, output size: 175104, start address: 0x20000000
-Wrote 175104 bytes to ../build/cheriot/cheriot/release/sonata_proximity_demo.slot3.uf2
-Converted to uf2, output size: 175104, start address: 0x20000000
-Wrote 175104 bytes to ../build/cheriot/cheriot/release/sonata_demo_everything.slot3.uf2
+...
 Converted to uf2, output size: 126976, start address: 0x20000000
 Wrote 126976 bytes to ../build/cheriot/cheriot/release/snake_demo.slot3.uf2
 [100%]: build ok, spent 13.04s
@@ -319,4 +187,4 @@ warning: add -v for getting more warnings ..
 ```
 
 If you are following this guide as preparation for a *workshop*, you are now all set up and don't need to go any further.
-If you are here on your own, you can now try [running software](./guide/running-software.md).
+If you are here on your own, you can now try [running software](https://lowrisc.github.io/sonata-software/doc/guide/running-software.html).
